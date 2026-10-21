@@ -1,0 +1,933 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Style frames y video anime</title>
+<meta name="description" content="Presentación de style frames y video anime. Creación Digital 4.">
+<link rel="icon" href="data:,">
+<style>
+  :root {
+    --bg: #0E0F0B;
+    --panel: #1C1D16;
+    --olive: #5C6B2E;
+    --gold: #F2C14E;
+    --bone: #F1EFE6;
+    --gray: #9EA08C;
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --font: 'Inter', system-ui, 'Segoe UI', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    height: 100%;
+    background: var(--bg);
+    color: var(--bone);
+    font-family: var(--font);
+    overflow: hidden;
+    overscroll-behavior: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body { height: 100dvh; }
+
+  /* ---------- Lienzo 16:9 con letterbox ---------- */
+  .stage {
+    position: fixed;
+    inset: 0;
+    margin: auto;
+    width: min(100vw, calc(100dvh * 16 / 9));
+    height: min(100dvh, calc(100vw * 9 / 16));
+    background: var(--bg);
+    container-type: size;
+    overflow: hidden;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transform: translateY(12px);
+    visibility: hidden;
+    transition: opacity 250ms var(--ease-out), transform 250ms var(--ease-out), visibility 0s linear 250ms;
+  }
+  .slide.is-active {
+    opacity: 1;
+    transform: none;
+    visibility: visible;
+    transition-delay: 0s;
+  }
+
+  .frame {
+    position: absolute;
+    inset: 9cqh 6.25cqw 14cqh 6.25cqw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  /* ---------- Tipografía ---------- */
+  .label {
+    margin: 0 0 2.4cqh;
+    font-size: max(11px, 1.05cqw);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .title {
+    margin: 0 0 4.5cqh;
+    font-size: 5.2cqw;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.02;
+    color: var(--bone);
+  }
+  .muted { color: var(--gray); }
+  .small { font-size: max(12px, 1.2cqw); line-height: 1.5; color: var(--gray); margin: 0; }
+  .body-text { font-size: max(14px, 1.5cqw); line-height: 1.5; color: var(--gray); margin: 0; }
+
+  /* ---------- 01 Portada ---------- */
+  .veil {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse 70% 60% at 72% 40%, rgba(92, 107, 46, 0.18), rgba(92, 107, 46, 0) 70%);
+  }
+  .cover .frame { justify-content: center; }
+  .cover .vbar {
+    position: absolute;
+    left: 3.3cqw;
+    top: 28cqh;
+    width: 6px;
+    height: 40cqh;
+    background: var(--gold);
+  }
+  .cover .title {
+    font-size: 10cqw;
+    line-height: 0.96;
+    margin-bottom: 5cqh;
+  }
+  .cover .subtitle {
+    margin: 0;
+    font-size: max(16px, 2cqw);
+    color: var(--gray);
+    letter-spacing: -0.01em;
+  }
+
+  /* ---------- 02 Logline ---------- */
+  .logline {
+    margin: 0;
+    max-width: 72cqw;
+    font-size: 3.7cqw;
+    font-weight: 600;
+    line-height: 1.22;
+    letter-spacing: -0.02em;
+    color: var(--bone);
+  }
+
+  /* ---------- 03 Historia ---------- */
+  .story-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4cqw;
+  }
+  .story-item { border-top: 1px solid #2a2b22; padding-top: 3cqh; }
+  .story-num {
+    display: block;
+    font-size: 3.2cqw;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--bone);
+    margin-bottom: 1.6cqh;
+  }
+  .story-name {
+    margin: 0 0 1.6cqh;
+    font-size: 2.1cqw;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--bone);
+  }
+  .story-item p {
+    margin: 0;
+    font-size: max(14px, 1.4cqw);
+    line-height: 1.55;
+    color: var(--gray);
+  }
+
+  /* ---------- 04 Video real ---------- */
+  .split-41 {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 5cqw;
+    align-items: center;
+  }
+  .video {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    height: auto;
+    border-radius: 12px;
+    background: var(--panel);
+    object-fit: contain;
+  }
+  .notes p + p { margin-top: 3cqh; }
+  .notes .lead {
+    margin: 0;
+    font-size: max(16px, 2cqw);
+    line-height: 1.4;
+    color: var(--bone);
+    font-weight: 500;
+  }
+
+  /* ---------- 05 Style frames ---------- */
+  .frames-layout {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 5cqw;
+    align-items: start;
+  }
+  .frames-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.7cqw;
+    width: 57cqw;
+  }
+  .frame-btn {
+    position: relative;
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    aspect-ratio: 16 / 9;
+    border: 3px solid transparent;
+    border-radius: 10px;
+    background: var(--panel);
+    overflow: hidden;
+    cursor: pointer;
+    font: inherit;
+    color: inherit;
+    transition: transform 200ms var(--ease-out);
+  }
+  .frame-btn.is-key { border-color: var(--gold); }
+  .frame-btn img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 7px;
+    transition: transform 250ms var(--ease-out);
+  }
+  .frame-btn .fnum {
+    position: absolute;
+    top: 0.8cqw;
+    left: 0.8cqw;
+    padding: 2px 7px;
+    background: var(--bg);
+    color: var(--bone);
+    font-size: max(11px, 1cqw);
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    border-radius: 4px;
+  }
+  .frame-btn:active { transform: scale(0.98); }
+  @media (hover: hover) and (pointer: fine) {
+    .frame-btn:hover img { transform: scale(1.02); }
+  }
+  .frame-btn:focus-visible,
+  .pair-btn:focus-visible,
+  .lb-btn:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+  }
+
+  .panel {
+    background: var(--panel);
+    border-radius: 12px;
+    padding: 4cqh 3cqw;
+  }
+  .panel .big-num {
+    display: block;
+    margin: 0 0 2.5cqh;
+    font-size: 9cqw;
+    font-weight: 800;
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    color: var(--gold);
+  }
+  .panel .panel-text {
+    margin: 0;
+    font-size: max(14px, 1.6cqw);
+    line-height: 1.5;
+    color: var(--bone);
+  }
+
+  /* ---------- 06 Versión anime ---------- */
+  .pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3cqw;
+  }
+  .pair-fig { margin: 0; }
+  .pair-btn {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    aspect-ratio: 16 / 9;
+    border: 0;
+    border-radius: 10px;
+    background: var(--panel);
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 200ms var(--ease-out);
+  }
+  .pair-btn img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 250ms var(--ease-out);
+  }
+  .pair-btn:active { transform: scale(0.99); }
+  @media (hover: hover) and (pointer: fine) {
+    .pair-btn:hover img { transform: scale(1.015); }
+  }
+  .pair-fig figcaption {
+    margin-top: 1.8cqh;
+    font-size: max(13px, 1.3cqw);
+    color: var(--bone);
+    font-weight: 500;
+  }
+  .anime-note { margin-top: 4cqh; }
+
+  /* ---------- 07 Video resultante ---------- */
+  .result-video {
+    display: block;
+    margin: 0 auto;
+    width: min(78cqw, calc(46cqh * 16 / 9));
+    aspect-ratio: 16 / 9;
+    height: auto;
+    border-radius: 12px;
+    background: var(--panel);
+    object-fit: contain;
+  }
+  .result-caption {
+    margin: 3cqh 0 0;
+    text-align: center;
+    font-size: max(13px, 1.3cqw);
+    color: var(--gray);
+  }
+
+  /* ---------- 08 Pendientes ---------- */
+  .rows { display: flex; flex-direction: column; gap: 2.2cqh; }
+  .row {
+    display: grid;
+    grid-template-columns: 6cqw 1fr;
+    align-items: center;
+    padding: 3cqh 3cqw;
+    background: var(--panel);
+    border-radius: 12px;
+  }
+  .row-num {
+    font-size: 3cqw;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--gray);
+  }
+  .row-text {
+    font-size: 2.3cqw;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--bone);
+  }
+
+  /* ---------- Cromo: barra y contador ---------- */
+  .chrome-bar {
+    position: absolute;
+    z-index: 5;
+    left: 6.25cqw;
+    right: 6.25cqw;
+    bottom: 5.4cqh;
+    height: 3px;
+    background: var(--panel);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .chrome-fill {
+    position: absolute;
+    inset: 0;
+    background: var(--gold);
+    transform-origin: left center;
+    transform: scaleX(0.125);
+    transition: transform 250ms var(--ease-out);
+  }
+  .counter {
+    position: absolute;
+    z-index: 5;
+    right: 6.25cqw;
+    bottom: 2.4cqh;
+    margin: 0;
+    font-size: max(11px, 1.05cqw);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--gray);
+    font-variant-numeric: tabular-nums;
+  }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* ---------- Visor (lightbox) ---------- */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(14, 15, 11, 0.97);
+    cursor: zoom-out;
+  }
+  .lightbox[hidden] { display: none; }
+  .lb-img {
+    max-width: 94vw;
+    max-height: 88dvh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+  .lb-caption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 3dvh;
+    margin: 0;
+    text-align: center;
+    font-size: max(13px, 1.1vw);
+    font-weight: 600;
+    color: var(--gray);
+    pointer-events: none;
+  }
+  .lb-btn {
+    position: absolute;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0 12px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--panel);
+    color: var(--bone);
+    font: inherit;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .lb-close { top: 16px; right: 16px; }
+  .lb-prev { left: 16px; top: 50%; transform: translateY(-50%); }
+  .lb-next { right: 16px; top: 50%; transform: translateY(-50%); }
+
+  /* ---------- Cursor oculto en pantalla completa ---------- */
+  body.is-fs.cursor-idle,
+  body.is-fs.cursor-idle * { cursor: none !important; }
+
+  /* ---------- Móvil vertical ---------- */
+  @media (max-aspect-ratio: 4 / 5) {
+    .stage {
+      width: 100vw;
+      height: 100dvh;
+    }
+    .frame {
+      inset: 9cqh 4.2cqw 12cqh 4.2cqw;
+      justify-content: flex-start;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-top: env(safe-area-inset-top, 0px);
+    }
+    .chrome-bar { left: 4.2cqw; right: 4.2cqw; }
+    .counter { right: 4.2cqw; }
+    .title { font-size: 9.5cqw; margin-bottom: 3.5cqh; }
+    .label { margin-bottom: 1.6cqh; }
+    .cover .frame { justify-content: center; }
+    .cover .title { font-size: 13cqw; }
+    .cover .vbar { left: 0; top: 24cqh; height: 34cqh; }
+    .cover .subtitle { font-size: max(15px, 4cqw); }
+    .logline { font-size: 7.2cqw; max-width: 100%; }
+    .story-grid { grid-template-columns: 1fr; gap: 3.5cqh; }
+    .story-num { font-size: 7cqw; margin-bottom: 0.8cqh; }
+    .story-name { font-size: 5cqw; }
+    .split-41 { grid-template-columns: 1fr; gap: 3cqh; }
+    .notes .lead { font-size: max(16px, 4.2cqw); }
+    .frames-layout { grid-template-columns: 1fr; gap: 3cqh; }
+    .frames-grid { width: 100%; grid-template-columns: repeat(2, 1fr); gap: 1.6cqw; }
+    .frame-btn .fnum { top: 1.2cqw; left: 1.2cqw; }
+    .panel .big-num { font-size: 22cqw; }
+    .panel .panel-text { font-size: max(15px, 4cqw); }
+    .pair { gap: 3cqw; }
+    .pair-fig figcaption { font-size: max(12px, 3.2cqw); }
+    .result-video { width: 100%; }
+    .row { grid-template-columns: 10cqw 1fr; padding: 3cqh 4cqw; }
+    .row-num { font-size: 7cqw; }
+    .row-text { font-size: max(16px, 4.6cqw); }
+    .lb-prev, .lb-next { top: auto; bottom: 10dvh; transform: none; }
+    .lb-prev { left: 12px; }
+    .lb-next { right: 12px; }
+    .lb-caption { bottom: 4dvh; }
+  }
+
+  /* ---------- Ajustes de escritorio (1920x1080) ---------- */
+  .cover-img {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 46%;
+    height: calc(100% - 110px);
+    object-fit: cover;
+    object-position: 88% center;
+    opacity: 0.9;
+    pointer-events: none;
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 60%);
+    mask-image: linear-gradient(to right, transparent 0%, #000 60%);
+  }
+  .hl { color: var(--gold); }
+
+  @media (min-aspect-ratio: 4 / 5) {
+    [data-title="Logline"] .frame,
+    [data-title="La historia"] .frame { inset: 9cqh 6.25cqw 18cqh 6.25cqw; }
+    [data-title="Logline"] .logline { font-size: clamp(48px, 4.4cqw, 84px); max-width: min(1300px, 72cqw); }
+    [data-title="La historia"] .story-num { font-size: clamp(64px, 5cqw, 96px); color: var(--gold); }
+    [data-title="La historia"] .story-grid { min-height: 40cqh; align-items: start; }
+    [data-title="La historia"] .story-name { font-size: 46px; }
+    [data-title="La historia"] .story-item p { font-size: 30px; line-height: 1.45; }
+    [data-title="Referencia real"] .split-41 { grid-template-columns: 58cqw 1fr; gap: 4cqw; }
+    [data-title="Referencia real"] .notes .lead { font-size: 34px; }
+    [data-title="Referencia real"] .notes .body-text { font-size: 26px; }
+    [data-title="Style frames"] .frames-layout { grid-template-columns: minmax(0, 1fr) 24cqw; gap: 3cqw; }
+    [data-title="Style frames"] .frames-grid { width: 100%; gap: 0.6cqw; }
+    [data-title="Style frames"] .panel .big-num { font-size: 170px; }
+    [data-title="El resultado"] .frame { inset: 7cqh 6.25cqw 18cqh 6.25cqw; }
+    [data-title="El resultado"] .title { margin-bottom: 2.5cqh; }
+    [data-title="El resultado"] .result-video {
+      width: min(1280px, 66vw);
+      max-width: 100%;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+    }
+    [data-title="El resultado"] .result-caption { font-size: 24px; }
+  }
+
+  @media (max-aspect-ratio: 4 / 5) {
+    .cover-img { width: 100%; height: 100%; opacity: 0.25; -webkit-mask-image: none; mask-image: none; }
+  }
+
+  /* ---------- Movimiento reducido ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      transition: none !important;
+      animation: none !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<main class="stage" id="stage">
+
+  <!-- 01 Portada -->
+  <section class="slide cover is-active" data-title="Portada" aria-hidden="false">
+    <div class="veil" aria-hidden="true"></div>
+    <img class="cover-img" src="media/anime/anime_110.jpg" alt="" aria-hidden="true">
+    <div class="vbar" aria-hidden="true"></div>
+    <div class="frame">
+      <p class="label">CREACIÓN DIGITAL 4</p>
+      <h1 class="title">Un paseo<br>tranquilo.<br>Un golpe.</h1>
+      <p class="subtitle">Style frames y video anime · estilo Dragon Ball</p>
+    </div>
+  </section>
+
+  <!-- 02 Logline -->
+  <section class="slide" data-title="Logline" aria-hidden="true">
+    <div class="frame">
+      <p class="label">LOGLINE</p>
+      <p class="logline">Un paseo tranquilo por un pasillo universitario se rompe cuando un choque despierta la furia de <span class="hl">Vinicius</span>, que se transforma en super saiyajin y golpea.</p>
+    </div>
+  </section>
+
+  <!-- 03 Historia -->
+  <section class="slide" data-title="La historia" aria-hidden="true">
+    <div class="frame">
+      <p class="label">LA HISTORIA</p>
+      <div class="story-grid">
+        <article class="story-item">
+          <span class="story-num">01</span>
+          <h2 class="story-name">El paseo</h2>
+          <p>Dos personas caminan tranquilas por un pasillo universitario: pared blanca, columna verde oliva, banca verde y amarilla. El de chaqueta café camina de espaldas, con las manos atrás.</p>
+        </article>
+        <article class="story-item">
+          <span class="story-num">02</span>
+          <h2 class="story-name">El choque</h2>
+          <p>Llega Vinicius, con gorra y camiseta negra, cargado de resentimiento. Se chocan sin querer y se rompe la calma del pasillo.</p>
+        </article>
+        <article class="story-item">
+          <span class="story-num">03</span>
+          <h2 class="story-name">La furia</h2>
+          <p>Vinicius se enfurece y se transforma como un super saiyajin: destello dorado, pelo dorado, líneas de velocidad. Lanza el puñetazo y el otro termina doblado.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 Video real -->
+  <section class="slide" data-title="Referencia real" aria-hidden="true">
+    <div class="frame">
+      <p class="label">01 · REFERENCIA REAL</p>
+      <h2 class="title">Todo empezó en el pasillo.</h2>
+      <div class="split-41">
+        <video class="video" controls preload="metadata" playsinline aria-label="Video de referencia real grabado en el pasillo">
+          <source src="media/video/referencia-real.mp4" type="video/mp4">
+        </video>
+        <div class="notes">
+          <p class="lead">Grabado en el pasillo de la universidad.</p>
+          <p class="body-text">Base de la rotoscopia: los dibujos se hicieron cuadro por cuadro sobre este video.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 Style frames -->
+  <section class="slide" data-title="Style frames" aria-hidden="true">
+    <div class="frame">
+      <p class="label">02 · STYLE FRAMES</p>
+      <h2 class="title">Nueve cuadros, una pelea.</h2>
+      <div class="frames-layout">
+        <div class="frames-grid">
+          <button class="frame-btn" type="button" data-lb="frames" data-src="media/frames/frame_036.png" data-alt="Frame 036" data-caption="Frame 036">
+            <img src="media/frames/frame_036.png" alt="Frame 036" loading="lazy"><span class="fnum">036</span>
+          </button>
+          <button class="frame-btn" type="button" data-lb="frames" data-src="media/frames/frame_065.png" data-alt="Frame 065" data-caption="Frame 065">
+            <img src="media/frames/frame_065.png" alt="Frame 065" loading="lazy"><span class="fnum">065</span>
+          </button>
+          <button class="frame-btn" type="button" data-lb="frames" data-src="media/frames/frame_077.png" data-alt="Frame 077" data-caption="Frame 077">
+            <img src="media/frames/frame_077.png" alt="Frame 077" loading="lazy"><span class="fnum">077</span>
+          </button>
+          <button class="frame-btn" type="button" data-lb="frames" data-src="media/frames/frame_088.png" data-alt="Frame 088" data-caption="Frame 088">
+            <img src="media/frames/frame_088.png" alt="Frame 088" loading="lazy"><span class="fnum">088</span>
+          </button>
+          <button class="frame-btn" type="button" data-lb="frames" data-src="media/frames/frame_101.png" data-alt="Frame 101" data-caption="Frame 101">
+            <img src="media/frames/frame_101.png" alt="Frame 101" loading="lazy"><span class="fnum">101</span>
+          </button>
+          <button class="frame-btn is-key" type="button" data-lb="frames" data-src="media/frames/frame_110.png" data-alt="Frame 110, el puñetazo" data-caption="Frame 110 · el puñetazo">
+            <img src="media/frames/frame_110.png" alt="Frame 110, el puñetazo" loading="lazy"><span class="fnum">110</span>
+          </button>
+          <button class="frame-btn" type="button" data-lb="frames" data-src="media/frames/frame_124.png" data-alt="Frame 124" data-caption="Frame 124">
+            <img src="media/frames/frame_124.png" alt="Frame 124" loading="lazy"><span class="fnum">124</span>
+          </button>
+          <button class="frame-btn" type="button" data-lb="frames" data-src="media/frames/frame_130.png" data-alt="Frame 130" data-caption="Frame 130">
+            <img src="media/frames/frame_130.png" alt="Frame 130" loading="lazy"><span class="fnum">130</span>
+          </button>
+          <button class="frame-btn" type="button" data-lb="frames" data-src="media/frames/frame_133.png" data-alt="Frame 133" data-caption="Frame 133">
+            <img src="media/frames/frame_133.png" alt="Frame 133" loading="lazy"><span class="fnum">133</span>
+          </button>
+        </div>
+        <aside class="panel">
+          <p class="label">CUADRO DESTACADO</p>
+          <span class="big-num">110</span>
+          <p class="panel-text">El puñetazo. Brazo extendido, el golpe que decide la historia.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 Versión anime -->
+  <section class="slide" data-title="Versión anime" aria-hidden="true">
+    <div class="frame">
+      <p class="label">03 · VERSIÓN ANIME</p>
+      <h2 class="title">Dragon Ball, cuadro a cuadro.</h2>
+      <div class="pair">
+        <figure class="pair-fig" style="margin:0">
+          <button class="pair-btn" type="button" data-lb="anime" data-src="media/anime/anime_110.jpg" data-alt="Frame 110, el golpe" data-caption="Frame 110 · el golpe">
+            <img src="media/anime/anime_110.jpg" alt="Frame 110, el golpe" loading="lazy">
+          </button>
+          <figcaption>Frame 110 · el golpe</figcaption>
+        </figure>
+        <figure class="pair-fig" style="margin:0">
+          <button class="pair-btn" type="button" data-lb="anime" data-src="media/anime/anime_133.jpg" data-alt="Frame 133, la caída" data-caption="Frame 133 · la caída">
+            <img src="media/anime/anime_133.jpg" alt="Frame 133, la caída" loading="lazy">
+          </button>
+          <figcaption>Frame 133 · la caída</figcaption>
+        </figure>
+      </div>
+      <p class="small anime-note">Generada con Google Flow y Veo 3.1, a partir de los style frames.</p>
+    </div>
+  </section>
+
+  <!-- 07 Video resultante -->
+  <section class="slide" data-title="El resultado" aria-hidden="true">
+    <div class="frame">
+      <p class="label">04 · EL RESULTADO</p>
+      <h2 class="title">El corte provisional.</h2>
+      <video class="result-video" controls preload="metadata" playsinline aria-label="Corte provisional de 30 segundos">
+        <source src="media/video/corte-v2.mp4" type="video/mp4">
+      </video>
+      <p class="result-caption">30 s · 5 clips de 8 s generados con Veo 3.1 Lite · montaje en proceso</p>
+    </div>
+  </section>
+
+  <!-- 08 Pendientes -->
+  <section class="slide" data-title="Lo que falta" aria-hidden="true">
+    <div class="frame">
+      <p class="label">05 · SIGUIENTE</p>
+      <h2 class="title">Lo que falta.</h2>
+      <div class="rows">
+        <div class="row"><span class="row-num">1</span><span class="row-text">El puente entre dos tramos</span></div>
+        <div class="row"><span class="row-num">2</span><span class="row-text">Corregir el pantalón naranja y caqui</span></div>
+        <div class="row"><span class="row-num">3</span><span class="row-text">Montaje final con sonido</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cromo: progreso y contador -->
+  <div class="chrome-bar" aria-hidden="true"><span class="chrome-fill" id="fill"></span></div>
+  <p class="counter" id="counter" aria-hidden="true">01 / 08</p>
+  <div class="sr-only" aria-live="polite" id="live"></div>
+
+</main>
+
+<!-- Visor -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Visor de imagen" hidden>
+  <button class="lb-btn lb-close" type="button" id="lb-close">Cerrar</button>
+  <button class="lb-btn lb-prev" type="button" id="lb-prev" aria-label="Imagen anterior">&lsaquo;</button>
+  <img class="lb-img" id="lb-img" alt="">
+  <button class="lb-btn lb-next" type="button" id="lb-next" aria-label="Imagen siguiente">&rsaquo;</button>
+  <p class="lb-caption" id="lb-caption"></p>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var N = slides.length;
+  var stage = document.getElementById('stage');
+  var fill = document.getElementById('fill');
+  var counter = document.getElementById('counter');
+  var live = document.getElementById('live');
+  var current = -1;
+
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+
+  function pauseMedia(slide) {
+    var vids = slide.querySelectorAll('video');
+    for (var i = 0; i < vids.length; i++) { vids[i].pause(); }
+  }
+
+  function go(i, updateHash) {
+    if (i < 0) i = 0;
+    if (i > N - 1) i = N - 1;
+    if (i === current) return;
+    current = i;
+
+    for (var k = 0; k < N; k++) {
+      var active = (k === i);
+      if (!active) pauseMedia(slides[k]);
+      slides[k].classList.toggle('is-active', active);
+      slides[k].setAttribute('aria-hidden', active ? 'false' : 'true');
+    }
+
+    fill.style.transform = 'scaleX(' + ((i + 1) / N) + ')';
+    counter.textContent = pad(i + 1) + ' / ' + pad(N);
+    live.textContent = 'Diapositiva ' + (i + 1) + ' de ' + N + ': ' + slides[i].getAttribute('data-title');
+
+    if (updateHash !== false) {
+      try { history.replaceState(null, '', '#' + (i + 1)); } catch (e) { /* ignorar */ }
+    }
+  }
+
+  function next() { go(current + 1); }
+  function prev() { go(current - 1); }
+
+  function indexFromHash() {
+    var h = parseInt(location.hash.slice(1), 10);
+    return (isNaN(h) || h < 1 || h > N) ? 0 : h - 1;
+  }
+
+  go(indexFromHash(), false);
+
+  window.addEventListener('hashchange', function () {
+    go(indexFromHash(), false);
+  });
+
+  /* ---------- Visor ---------- */
+  var lb = document.getElementById('lightbox');
+  var lbImg = document.getElementById('lb-img');
+  var lbCap = document.getElementById('lb-caption');
+  var lbClose = document.getElementById('lb-close');
+  var lbPrev = document.getElementById('lb-prev');
+  var lbNext = document.getElementById('lb-next');
+  var lbList = [];
+  var lbIdx = 0;
+  var lbTrigger = null;
+
+  var groups = {};
+  var triggers = document.querySelectorAll('[data-lb]');
+  for (var t = 0; t < triggers.length; t++) {
+    var g = triggers[t].getAttribute('data-lb');
+    (groups[g] = groups[g] || []).push(triggers[t]);
+  }
+
+  function renderLB() {
+    var it = lbList[lbIdx];
+    lbImg.src = it.src;
+    lbImg.alt = it.alt;
+    lbCap.textContent = it.caption;
+  }
+
+  function openLB(list, idx, trigger) {
+    lbList = list.map(function (b) {
+      return { src: b.getAttribute('data-src'), alt: b.getAttribute('data-alt'), caption: b.getAttribute('data-caption') };
+    });
+    lbIdx = idx;
+    lbTrigger = trigger;
+    renderLB();
+    lb.hidden = false;
+    lbClose.focus();
+  }
+
+  function closeLB() {
+    if (lb.hidden) return;
+    lb.hidden = true;
+    lbImg.removeAttribute('src');
+    if (lbTrigger && lbTrigger.focus) lbTrigger.focus();
+  }
+
+  function lbStep(d) {
+    lbIdx = (lbIdx + d + lbList.length) % lbList.length;
+    renderLB();
+  }
+
+  for (var key in groups) {
+    if (!groups.hasOwnProperty(key)) continue;
+    (function (list) {
+      list.forEach(function (btn, idx) {
+        btn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          openLB(list, idx, btn);
+        });
+      });
+    })(groups[key]);
+  }
+
+  lb.addEventListener('click', closeLB);
+  lbPrev.addEventListener('click', function (e) { e.stopPropagation(); lbStep(-1); });
+  lbNext.addEventListener('click', function (e) { e.stopPropagation(); lbStep(1); });
+  lbClose.addEventListener('click', function (e) { e.stopPropagation(); closeLB(); });
+
+  /* ---------- Teclado ---------- */
+  function toggleFS() {
+    if (!document.fullscreenElement) {
+      var p = document.documentElement.requestFullscreen && document.documentElement.requestFullscreen();
+      if (p && p.catch) p.catch(function () {});
+    } else if (document.exitFullscreen) {
+      var q = document.exitFullscreen();
+      if (q && q.catch) q.catch(function () {});
+    }
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.altKey || e.ctrlKey || e.metaKey) return;
+
+    if (!lb.hidden) {
+      if (e.key === 'Escape') { e.preventDefault(); closeLB(); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); lbStep(1); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); lbStep(-1); }
+      return;
+    }
+
+    if (e.key === 'f' || e.key === 'F') { toggleFS(); return; }
+
+    var tag = e.target && e.target.tagName;
+    switch (e.key) {
+      case 'ArrowRight':
+      case 'PageDown':
+        e.preventDefault(); next(); break;
+      case 'ArrowLeft':
+      case 'PageUp':
+        e.preventDefault(); prev(); break;
+      case ' ':
+      case 'Spacebar':
+        if (tag === 'VIDEO' || tag === 'BUTTON' || tag === 'A') return;
+        e.preventDefault();
+        if (e.shiftKey) prev(); else next();
+        break;
+    }
+  });
+
+  /* ---------- Clic en los costados ---------- */
+  stage.addEventListener('click', function (e) {
+    if (e.target.closest && e.target.closest('video, button, a')) return;
+    var r = stage.getBoundingClientRect();
+    var x = (e.clientX - r.left) / r.width;
+    if (x < 0.2) prev();
+    else if (x > 0.8) next();
+  });
+
+  /* ---------- Swipe horizontal (móvil) ---------- */
+  var sx = 0, sy = 0, swiping = false;
+  stage.addEventListener('touchstart', function (e) {
+    if (e.touches.length !== 1 || (e.target.closest && e.target.closest('video, button'))) {
+      swiping = false;
+      return;
+    }
+    swiping = true;
+    sx = e.touches[0].clientX;
+    sy = e.touches[0].clientY;
+  }, { passive: true });
+
+  stage.addEventListener('touchend', function (e) {
+    if (!swiping) return;
+    swiping = false;
+    var t = e.changedTouches[0];
+    var dx = t.clientX - sx;
+    var dy = t.clientY - sy;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+      if (dx < 0) next(); else prev();
+    }
+  }, { passive: true });
+
+  /* ---------- Pantalla completa y cursor oculto ---------- */
+  var idleTimer = null;
+
+  function wake() {
+    document.body.classList.remove('cursor-idle');
+    clearTimeout(idleTimer);
+    if (document.fullscreenElement) {
+      idleTimer = setTimeout(function () {
+        document.body.classList.add('cursor-idle');
+      }, 3000);
+    }
+  }
+
+  ['mousemove', 'pointerdown', 'touchstart', 'keydown'].forEach(function (ev) {
+    document.addEventListener(ev, wake, { passive: true });
+  });
+
+  document.addEventListener('fullscreenchange', function () {
+    document.body.classList.toggle('is-fs', !!document.fullscreenElement);
+    wake();
+  });
+})();
+</script>
+</body>
+</html>
