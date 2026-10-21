@@ -268,9 +268,11 @@
   /* ---------- 06 Versión anime ---------- */
   .pair {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3cqw;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1.2cqw;
   }
+  .pair-fig { grid-column: span 1; }
+  .pair-fig figcaption { font-size: max(12px, 1.05cqw); }
   .pair-fig { margin: 0; }
   .pair-btn {
     display: block;
@@ -476,7 +478,7 @@
     .frame-btn .fnum { top: 1.2cqw; left: 1.2cqw; }
     .panel .big-num { font-size: 22cqw; }
     .panel .panel-text { font-size: max(15px, 4cqw); }
-    .pair { gap: 3cqw; }
+    .pair { gap: 3cqw; grid-template-columns: 1fr 1fr; } .pair-fig, .pair-fig:nth-child(n+4) { grid-column: span 1; }
     .pair-fig figcaption { font-size: max(12px, 3.2cqw); }
     .result-video { width: 100%; }
     .row { grid-template-columns: 10cqw 1fr; padding: 3cqh 4cqw; }
@@ -535,7 +537,7 @@
     .frame-btn .fnum { top: 1.2cqw; left: 1.2cqw; }
     .panel .big-num { font-size: 22cqw; }
     .panel .panel-text { font-size: max(15px, 4cqw); }
-    .pair { gap: 3cqw; }
+    .pair { gap: 3cqw; grid-template-columns: 1fr 1fr; } .pair-fig, .pair-fig:nth-child(n+4) { grid-column: span 1; }
     .pair-fig figcaption { font-size: max(12px, 3.2cqw); }
     .result-video { width: 100%; }
     .row { grid-template-columns: 10cqw 1fr; padding: 3cqh 4cqw; }
@@ -607,7 +609,7 @@
   <!-- 01 Portada -->
   <section class="slide cover is-active" data-title="Portada" aria-hidden="false">
     <div class="veil" aria-hidden="true"></div>
-    <img class="cover-img" src="media/anime/anime_110.jpg" alt="" aria-hidden="true">
+    <img class="cover-img" src="media/anime/arena_110.jpg" alt="" aria-hidden="true">
     <div class="vbar" aria-hidden="true"></div>
     <div class="frame">
       <p class="label">CREACIÓN DIGITAL 4</p>
@@ -652,14 +654,14 @@
   <section class="slide" data-title="Referencia real" aria-hidden="true">
     <div class="frame">
       <p class="label">01 · REFERENCIA REAL</p>
-      <h2 class="title">Todo empezó en el pasillo.</h2>
+      <h2 class="title">Solo una referencia.</h2>
       <div class="split-41">
         <video class="video" controls preload="metadata" playsinline aria-label="Video de referencia real grabado en el pasillo">
           <source src="media/video/referencia-real.mp4" type="video/mp4">
         </video>
         <div class="notes">
-          <p class="lead">Grabado en el pasillo de la universidad.</p>
-          <p class="body-text">Base de la rotoscopia: los dibujos se hicieron cuadro por cuadro sobre este video.</p>
+          <p class="lead">Grabado en un pasillo de la universidad.</p>
+          <p class="body-text">Sirvió para dibujar los style frames. La historia, en cambio, ocurre en la arena del torneo.</p>
         </div>
       </div>
     </div>
@@ -713,22 +715,40 @@
   <section class="slide" data-title="Versión anime" aria-hidden="true">
     <div class="frame">
       <p class="label">03 · VERSIÓN ANIME</p>
-      <h2 class="title">Dragon Ball, cuadro a cuadro.</h2>
+      <h2 class="title">La arena del torneo.</h2>
       <div class="pair">
         <figure class="pair-fig" style="margin:0">
-          <button class="pair-btn" type="button" data-lb="anime" data-src="media/anime/anime_110.jpg" data-alt="Frame 110, el golpe" data-caption="Frame 110 · el golpe">
-            <img src="media/anime/anime_110.jpg" alt="Frame 110, el golpe" loading="lazy">
+          <button class="pair-btn" type="button" data-lb="anime" data-src="media/anime/arena_036.jpg" data-alt="Frame 036 · el paseo" data-caption="Frame 036 · el paseo">
+            <img src="media/anime/arena_036.jpg" alt="Frame 036 · el paseo" loading="lazy">
+          </button>
+          <figcaption>Frame 036 · el paseo</figcaption>
+        </figure>
+        <figure class="pair-fig" style="margin:0">
+          <button class="pair-btn" type="button" data-lb="anime" data-src="media/anime/arena_065.jpg" data-alt="Frame 065 · el acercamiento" data-caption="Frame 065 · el acercamiento">
+            <img src="media/anime/arena_065.jpg" alt="Frame 065 · el acercamiento" loading="lazy">
+          </button>
+          <figcaption>Frame 065 · el acercamiento</figcaption>
+        </figure>
+        <figure class="pair-fig" style="margin:0">
+          <button class="pair-btn" type="button" data-lb="anime" data-src="media/anime/arena_101.jpg" data-alt="Frame 101 · cara a cara" data-caption="Frame 101 · cara a cara">
+            <img src="media/anime/arena_101.jpg" alt="Frame 101 · cara a cara" loading="lazy">
+          </button>
+          <figcaption>Frame 101 · cara a cara</figcaption>
+        </figure>
+        <figure class="pair-fig" style="margin:0">
+          <button class="pair-btn" type="button" data-lb="anime" data-src="media/anime/arena_110.jpg" data-alt="Frame 110 · el golpe" data-caption="Frame 110 · el golpe">
+            <img src="media/anime/arena_110.jpg" alt="Frame 110 · el golpe" loading="lazy">
           </button>
           <figcaption>Frame 110 · el golpe</figcaption>
         </figure>
         <figure class="pair-fig" style="margin:0">
-          <button class="pair-btn" type="button" data-lb="anime" data-src="media/anime/anime_133.jpg" data-alt="Frame 133, la caída" data-caption="Frame 133 · la caída">
-            <img src="media/anime/anime_133.jpg" alt="Frame 133, la caída" loading="lazy">
+          <button class="pair-btn" type="button" data-lb="anime" data-src="media/anime/arena_133.jpg" data-alt="Frame 133 · la caída" data-caption="Frame 133 · la caída">
+            <img src="media/anime/arena_133.jpg" alt="Frame 133 · la caída" loading="lazy">
           </button>
           <figcaption>Frame 133 · la caída</figcaption>
         </figure>
       </div>
-      <p class="small anime-note">Generada con Google Flow y Veo 3.1, a partir de los style frames, en la arena del torneo.</p>
+      <p class="small anime-note">Cada dibujo se redibujó como un cuadro de Dragon Ball ambientado en la arena del Torneo de Artes Marciales, y de ahí se generó el video con Google Flow y Veo 3.1.</p>
     </div>
   </section>
 
