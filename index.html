@@ -934,10 +934,11 @@
   });
 
   /* ---------- Clic en los costados ---------- */
-  stage.addEventListener('click', function (e) {
-    if (e.target.closest && e.target.closest('video, button, a')) return;
-    var r = stage.getBoundingClientRect();
-    var x = (e.clientX - r.left) / r.width;
+  /* Toda la ventana cuenta, también las franjas negras fuera del lienzo 16:9. */
+  document.addEventListener('click', function (e) {
+    if (!lb.hidden) return;
+    if (e.target.closest && e.target.closest('video, button, a, input, [role="dialog"]')) return;
+    var x = e.clientX / window.innerWidth;
     if (x < 0.2) prev();
     else if (x > 0.8) next();
   });
