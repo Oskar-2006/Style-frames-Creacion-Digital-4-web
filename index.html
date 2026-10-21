@@ -504,28 +504,87 @@
   }
   .hl { color: var(--gold); }
 
+  @media (max-aspect-ratio: 4 / 5) {
+    .stage {
+      width: 100vw;
+      height: 100dvh;
+    }
+    .frame {
+      inset: 9cqh 4.2cqw 12cqh 4.2cqw;
+      justify-content: flex-start;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-top: env(safe-area-inset-top, 0px);
+    }
+    .chrome-bar { left: 4.2cqw; right: 4.2cqw; }
+    .counter { right: 4.2cqw; }
+    .title { font-size: 9.5cqw; margin-bottom: 3.5cqh; }
+    .label { margin-bottom: 1.6cqh; }
+    .cover .frame { justify-content: center; }
+    .cover .title { font-size: 13cqw; }
+    .cover .vbar { left: 0; top: 24cqh; height: 34cqh; }
+    .cover .subtitle { font-size: max(15px, 4cqw); }
+    .logline { font-size: 7.2cqw; max-width: 100%; }
+    .story-grid { grid-template-columns: 1fr; gap: 3.5cqh; }
+    .story-num { font-size: 7cqw; margin-bottom: 0.8cqh; }
+    .story-name { font-size: 5cqw; }
+    .split-41 { grid-template-columns: 1fr; gap: 3cqh; }
+    .notes .lead { font-size: max(16px, 4.2cqw); }
+    .frames-layout { grid-template-columns: 1fr; gap: 3cqh; }
+    .frames-grid { width: 100%; grid-template-columns: repeat(2, 1fr); gap: 1.6cqw; }
+    .frame-btn .fnum { top: 1.2cqw; left: 1.2cqw; }
+    .panel .big-num { font-size: 22cqw; }
+    .panel .panel-text { font-size: max(15px, 4cqw); }
+    .pair { gap: 3cqw; }
+    .pair-fig figcaption { font-size: max(12px, 3.2cqw); }
+    .result-video { width: 100%; }
+    .row { grid-template-columns: 10cqw 1fr; padding: 3cqh 4cqw; }
+    .row-num { font-size: 7cqw; }
+    .row-text { font-size: max(16px, 4.6cqw); }
+    .lb-prev, .lb-next { top: auto; bottom: 10dvh; transform: none; }
+    .lb-prev { left: 12px; }
+    .lb-next { right: 12px; }
+    .lb-caption { bottom: 4dvh; }
+  }
+
+  /* ---------- Ajustes de escritorio (1920x1080) ---------- */
+  .cover-img {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 46%;
+    height: calc(100% - 110px);
+    object-fit: cover;
+    object-position: 88% center;
+    opacity: 0.9;
+    pointer-events: none;
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 60%);
+    mask-image: linear-gradient(to right, transparent 0%, #000 60%);
+  }
+  .hl { color: var(--gold); }
+
   @media (min-aspect-ratio: 4 / 5) {
     [data-title="Logline"] .frame,
     [data-title="La historia"] .frame { inset: 9cqh 6.25cqw 18cqh 6.25cqw; }
-    [data-title="Logline"] .logline { font-size: clamp(48px, 4.4cqw, 84px); max-width: min(1300px, 72cqw); }
-    [data-title="La historia"] .story-num { font-size: clamp(64px, 5cqw, 96px); color: var(--gold); }
+    [data-title="Logline"] .logline { font-size: 4.4cqw; max-width: min(1300px, 72cqw); }
+    [data-title="La historia"] .story-num { font-size: 5cqw; color: var(--gold); }
     [data-title="La historia"] .story-grid { min-height: 40cqh; align-items: start; }
-    [data-title="La historia"] .story-name { font-size: 46px; }
-    [data-title="La historia"] .story-item p { font-size: 30px; line-height: 1.45; }
+    [data-title="La historia"] .story-name { font-size: 2.4cqw; }
+    [data-title="La historia"] .story-item p { font-size: 1.56cqw; line-height: 1.45; }
     [data-title="Referencia real"] .split-41 { grid-template-columns: 58cqw 1fr; gap: 4cqw; }
-    [data-title="Referencia real"] .notes .lead { font-size: 34px; }
-    [data-title="Referencia real"] .notes .body-text { font-size: 26px; }
+    [data-title="Referencia real"] .notes .lead { font-size: 1.77cqw; }
+    [data-title="Referencia real"] .notes .body-text { font-size: 1.35cqw; }
     [data-title="Style frames"] .frames-layout { grid-template-columns: minmax(0, 1fr) 24cqw; gap: 3cqw; }
     [data-title="Style frames"] .frames-grid { width: 100%; gap: 0.6cqw; }
-    [data-title="Style frames"] .panel .big-num { font-size: 170px; }
-    [data-title="El resultado"] .frame { inset: 7cqh 6.25cqw 18cqh 6.25cqw; }
+    [data-title="Style frames"] .panel .big-num { font-size: 8.85cqw; }
+    [data-title="El resultado"] .frame { inset: 10cqh 6.25cqw 16cqh 6.25cqw; }
     [data-title="El resultado"] .title { margin-bottom: 2.5cqh; }
     [data-title="El resultado"] .result-video {
-      width: min(1280px, 66vw);
+      width: min(1180px, 60cqw);
       max-width: 100%;
       box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
     }
-    [data-title="El resultado"] .result-caption { font-size: 24px; }
+    [data-title="El resultado"] .result-caption { font-size: 1.25cqw; }
   }
 
   @media (max-aspect-ratio: 4 / 5) {
